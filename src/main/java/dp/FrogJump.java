@@ -3,17 +3,21 @@ package dp;
 public class FrogJump {
 
     public static int frogJump(int N, int[] heights) {
-        if (N == 0) {
+        if (N<=1) {
             return 0;
         }
-        if(N==1) {
-            return heights[0];
+//        if(N==1 || N==2) {
+//            return heights[N-1];
+//        }
+
+        int left = frogJump(N - 1, heights) + Math.abs(heights[N-1] - heights[N-2]);
+
+        int right = Integer.MAX_VALUE;
+
+        if(N>2) {
+            right = frogJump(N - 2, heights) + Math.abs(heights[N-1] - heights[N-3]);
         }
 
-        int left = frogJump(N - 1, heights);
-        System.out.println("left->"+left);
-        int right = frogJump(N - 2, heights);
-        System.out.println("right->"+right);
 
         return Integer.min(left, right);
     }
