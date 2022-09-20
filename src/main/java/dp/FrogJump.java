@@ -1,25 +1,48 @@
 package dp;
 
+import java.util.Arrays;
+
 public class FrogJump {
 
-    public static int frogJump(int N, int[] heights) {
+    public static int frogJumpRecursive(int N, int[] heights) {
         if (N<=1) {
             return 0;
         }
-//        if(N==1 || N==2) {
-//            return heights[N-1];
-//        }
 
-        int left = frogJump(N - 1, heights) + Math.abs(heights[N-1] - heights[N-2]);
+        int left = frogJumpRecursive(N - 1, heights) + Math.abs(heights[N-1] - heights[N-2]);
 
         int right = Integer.MAX_VALUE;
 
         if(N>2) {
-            right = frogJump(N - 2, heights) + Math.abs(heights[N-1] - heights[N-3]);
+            right = frogJumpRecursive(N - 2, heights) + Math.abs(heights[N-1] - heights[N-3]);
         }
 
-
         return Integer.min(left, right);
+    }
+
+    private static int helper(int N, int[] heights, int[] dp) {
+        if (N<=0) {
+            return 0;
+        }
+
+        if(dp[N]!=-1) {
+            System.out.println("Reuse: "+(N));
+            return dp[N];
+        }
+        int left = 0, right = Integer.MAX_VALUE;
+        left = frogJumpRecursiveDP(N-1, heights) + Math.abs(heights[N] - heights[N-1]);
+
+        if(N>1) {
+            right = frogJumpRecursiveDP(N - 2, heights) + Math.abs(heights[N] - heights[N-2]);
+        }
+
+        return dp[N] = Integer.min(left, right);
+    }
+
+    public static int frogJumpRecursiveDP(int N, int[] heights) {
+        int[] dp = new int[N+1];
+        Arrays.fill(dp, -1);
+        return helper(N-1, heights, dp);
     }
 
     public static void main(String[] args) {
@@ -27,6 +50,16 @@ public class FrogJump {
 
         int[] heights = new int[]{10, 20, 30, 10};
 
-        System.out.println("Min energy: " + frogJump(N, heights));
+        System.out.println("Recursive: Min energy: " + frogJumpRecursive(N, heights));
+        N = 4;
+        System.out.println("Recursive DP: Min energy: " + frogJumpRecursiveDP(N, heights));
+
+        N = 6;
+
+        heights = new int[] {30,10,60,10,60,50};
+
+        System.out.println("Recursive: Min energy: " + frogJumpRecursive(N, heights));
+        N = 6;
+        System.out.println("Recursive DP: Min energy: " + frogJumpRecursiveDP(N, heights));
     }
 }
