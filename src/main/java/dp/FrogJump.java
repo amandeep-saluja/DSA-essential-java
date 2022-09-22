@@ -65,6 +65,23 @@ public class FrogJump {
         return dp[N];
     }
 
+    public static int frogJumpLoopDPOptimized(int N, int[] heights) {
+        int last=0, secondLast = 0;
+
+        for (int i = 1; i <= N; i++) {
+            int left = last + Math.abs(heights[i] - heights[i - 1]);
+            int right = Integer.MAX_VALUE;
+            // at-least more than 2 stairs should be present to jump 2 steps
+            if (i > 1) {
+                right = secondLast + Math.abs(heights[i] - heights[i - 2]);
+            }
+            secondLast = last;
+            last = Integer.min(left, right);
+        }
+
+        return last;
+    }
+
     public static void main(String[] args) {
         int N = 4;
 
@@ -73,6 +90,7 @@ public class FrogJump {
         System.out.println("Recursive: Min energy: " + frogJumpRecursive(N, heights));
         System.out.println("Recursive DP: Min energy: " + frogJumpRecursiveDP(N, heights));
         System.out.println("Loop DP: Min energy: " + frogJumpLoopDP(N - 1, heights));
+        System.out.println("Loop DP Optimized: Min energy: " + frogJumpLoopDPOptimized(N - 1, heights));
 
         N = 6;
 
@@ -81,5 +99,6 @@ public class FrogJump {
         System.out.println("Recursive: Min energy: " + frogJumpRecursive(N, heights));
         System.out.println("Recursive DP: Min energy: " + frogJumpRecursiveDP(N, heights));
         System.out.println("Loop DP: Min energy: " + frogJumpLoopDP(N - 1, heights));
+        System.out.println("Loop DP Optimized: Min energy: " + frogJumpLoopDPOptimized(N - 1, heights));
     }
 }
