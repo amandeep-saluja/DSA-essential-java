@@ -1,3 +1,6 @@
+#include <iostream>
+using namespace std;
+
 class Solution {
 
     void helper(int n, int idx, int k, vector<vector<int>>& res, vector<int>& temp) {
@@ -22,3 +25,19 @@ public:
         return res;
     }
 };
+
+int main()
+{
+    Solution s;
+    vector<vector<int>> res =  s.combine(4, 3);
+
+    for(vector<int> row: res) {
+        cout<<"(";
+        for(int s: row) {
+            cout<<s<<", ";
+        }
+        cout<<")"<<endl;
+    }
+
+    return 0;
+}
